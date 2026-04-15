@@ -1,0 +1,231 @@
+/* --- Variables de Estilo --- */
+:root {
+    --color-pink-cartel: #D81B60; /* Rosa vibrante y profundo del cartel (image_5.png) */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-paw-green: #4CAF50; /* Verde de la huellita */
+    --font-logo: 'Fredoka', sans-serif; /* Gruesa y amigable */
+    --font-body: 'Varela Round', sans-serif; /* Redondeada y limpia */
+}
+
+/* --- Configuración General --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-white); /* El fondo de la página vuelve a ser blanco */
+    color: var(--color-black);
+    font-family: var(--font-body);
+}
+
+/* --- El Header como Cartel Principal --- */
+.main-header-cartel {
+    /* Aquí aplicamos el color unificado */
+    background-color: var(--color-pink-cartel); 
+    
+    padding: 20px 0 30px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #C2185B; /* Un borde sutil más oscuro */
+}
+
+.cartel-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column; /* Apilar elementos */
+    align-items: center; /* Centrar todo */
+    position: relative;
+}
+
+/* Menú hamburguesa - Blanco sobre rosa */
+.menu-toggle {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 20px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: var(--color-white); /* Líneas blancas */
+    margin: 5px 0;
+}
+
+/* --- Estilo del Logo y Huellas Decorativas --- */
+.logo-container {
+    text-align: center;
+    width: 100%;
+    max-width: 1100px; /* Aumentamos para que las huellas grandes tengan aire */
+    margin-top: 10px;
+    padding: 0 20px;
+}
+
+.logo-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px; /* Más espacio para que no se amontonen con el logo */
+}
+
+/* Estilo para las imágenes de huellas decorativas */
+.paw-decor {
+    width: 200px;  /* ANTES 70px -> AHORA 150px para que se vean bien */
+    height: auto;
+    opacity: 0.9;
+    /* TRUCO: Si las huellas son verdes y las querés blancas como el logo, 
+       descomentá la línea de abajo: */
+    /* filter: brightness(0) invert(1); */
+}
+
+/* Inclinación más pronunciada para que parezcan pisadas reales */
+.paw-left {
+    transform: rotate(-25deg);
+}
+
+.paw-right {
+    transform: rotate(25deg);
+}
+
+/* Estilo para tu imagen única del logo */
+.main-logo-img {
+    max-height: 220px; /* Un poquito más grande también el logo */
+    width: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* --- Media Query para Celulares --- */
+@media (max-width: 800px) {
+    .logo-row {
+        gap: 20px;
+    }
+    
+    .paw-decor {
+        width: 60px; /* En celular las bajamos para que no se amontonen */
+    }
+    
+    .main-logo-img {
+        max-height: 140px;
+    }
+}
+
+/* Puedes borrar o comentar las clases viejas (.pet-shop-text, .pipon-logo, .o-with-paw, .slogan-text) 
+   ya que ahora todo está incluido dentro de tu imagen */
+
+/* --- Secciones Principales (Bajo el cartel) --- */
+.container {
+    padding: 30px;
+}
+
+/* --- Cuadrícula de fotos (Esqueleto) --- */
+.photo-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.photo-card {
+    border: 3px solid var(--color-black);
+    width: 160px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: var(--color-white);
+}
+
+/* --- Buscador de Productos (Actualizado con rosa del cartel) --- */
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.search-box {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid var(--color-pink-cartel); /* Borde rosa cartel */
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: var(--color-white);
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    padding: 12px 20px;
+    outline: none;
+    font-size: 1rem;
+    font-family: var(--font-body);
+}
+
+.search-box button {
+    background-color: var(--color-pink-cartel); /* Botón rosa cartel */
+    border: none;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.search-box button hover {
+    background-color: #C2185B; /* Rosa más oscuro al pasar mouse */
+}
+
+.search-icon {
+    font-size: 1.2rem;
+    color: var(--color-white);
+}
+
+/* --- Media Query para Celulares --- */
+@media (max-width: 600px) {
+    .main-header-cartel {
+        padding: 15px 0;
+    }
+    
+    .pipon-logo {
+        font-size: 3rem; /* Ajustar tamaño logo */
+    }
+    
+    .o-with-paw {
+        font-size: 3rem;
+    }
+
+    .paw-icon {
+        font-size: 1.2rem; /* Huella más pequeña */
+    }
+
+    .slogan-text {
+        font-size: 1rem;
+    }
+}
+
+:root {
+    /* Este es el color exacto de la izquierda de tu foto (el del logo) */
+    --color-pink-cartel: #BE448E; 
+    
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-paw-green: #4CAF50;
+    --font-logo: 'Fredoka', sans-serif;
+    --font-body: 'Varela Round', sans-serif;
+}
+
+.main-header-cartel {
+    background-color: var(--color-pink-cartel);
+    padding: 20px 0 30px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Un borde un poco más oscuro para que haga juego */
+    border-bottom: 3px solid #9B3674; 
+}
