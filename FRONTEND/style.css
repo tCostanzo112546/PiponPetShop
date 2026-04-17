@@ -271,3 +271,96 @@ body {
     /* Un borde un poco más oscuro para que haga juego */
     border-bottom: 3px solid #9B3674; 
 }
+
+/* --- Sección de Productos --- */
+.productos-section {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Títulos con el estilo de tu dibujo */
+.categoria-titulo-principal {
+    font-family: var(--font-logo);
+    font-size: 2.2rem;
+    border: 3px solid var(--color-black);
+    display: inline-block;
+    padding: 10px 30px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.marca-titulo {
+    font-family: var(--font-logo);
+    font-size: 1.8rem;
+    border: 3px solid var(--color-black);
+    display: inline-block;
+    padding: 5px 20px;
+    margin: 20px 0;
+}
+
+/* El título redondeado de Pro Plan como en tu dibujo */
+.marca-titulo-round {
+    font-family: var(--font-logo);
+    font-size: 1.8rem;
+    border: 3px solid var(--color-black);
+    border-radius: 50px; /* Hace el óvalo del dibujo */
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 20px 0;
+}
+
+/* Grilla de productos */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Se acomoda solo según el ancho */
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+/* Tarjeta de producto individual */
+.producto-card {
+    border: 3px solid var(--color-black);
+    background-color: var(--color-white);
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s ease;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px); /* Pequeño salto al pasar el mouse */
+    box-shadow: 5px 5px 0px var(--color-black); /* Sombra sólida estilo dibujo */
+}
+
+.producto-foto {
+    width: 100%;
+    height: 120px;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #888;
+}
+
+.producto-info {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.producto-info strong {
+    color: var(--color-pink-cartel);
+    font-size: 1.1rem;
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos productos por fila en celu */
+    }
+    .categoria-titulo-principal { font-size: 1.5rem; }
+}
