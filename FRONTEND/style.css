@@ -1,14 +1,14 @@
-/* --- Variables de Estilo --- */
+/* --- 1. VARIABLES DE ESTILO --- */
 :root {
-    --color-pink-cartel: #D81B60; /* Rosa vibrante y profundo del cartel (image_5.png) */
+    --color-pink-cartel: #BE448E; /* Color exacto del logo unificado */
+    --color-pink-dark: #9B3674;   /* Para el borde del cartel */
     --color-white: #ffffff;
     --color-black: #000000;
-    --color-paw-green: #4CAF50; /* Verde de la huellita */
-    --font-logo: 'Fredoka', sans-serif; /* Gruesa y amigable */
-    --font-body: 'Varela Round', sans-serif; /* Redondeada y limpia */
+    --font-logo: 'Fredoka', sans-serif;
+    --font-body: 'Varela Round', sans-serif;
 }
 
-/* --- Configuración General --- */
+/* --- 2. CONFIGURACIÓN GENERAL --- */
 * {
     margin: 0;
     padding: 0;
@@ -16,33 +16,30 @@
 }
 
 body {
-    background-color: var(--color-white); /* El fondo de la página vuelve a ser blanco */
+    background-color: var(--color-white);
     color: var(--color-black);
     font-family: var(--font-body);
 }
 
-/* --- El Header como Cartel Principal --- */
+/* --- 3. HEADER (CARTEL ROSA) --- */
 .main-header-cartel {
-    /* Aquí aplicamos el color unificado */
-    background-color: var(--color-pink-cartel); 
-    
+    background-color: var(--color-pink-cartel);
     padding: 20px 0 30px 0;
     width: 100%;
     display: flex;
     justify-content: center;
-    border-bottom: 2px solid #C2185B; /* Un borde sutil más oscuro */
+    border-bottom: 3px solid var(--color-pink-dark);
 }
 
 .cartel-content {
     width: 100%;
     max-width: 1200px;
     display: flex;
-    flex-direction: column; /* Apilar elementos */
-    align-items: center; /* Centrar todo */
+    flex-direction: column;
+    align-items: center;
     position: relative;
 }
 
-/* Menú hamburguesa - Blanco sobre rosa */
 .menu-toggle {
     cursor: pointer;
     position: absolute;
@@ -54,93 +51,58 @@ body {
     display: block;
     width: 28px;
     height: 3px;
-    background-color: var(--color-white); /* Líneas blancas */
+    background-color: var(--color-white);
     margin: 5px 0;
 }
 
-/* --- Estilo del Logo y Huellas Decorativas --- */
+/* --- 4. LOGO Y HUELLAS --- */
 .logo-container {
     text-align: center;
     width: 100%;
-    max-width: 1100px; /* Aumentamos para que las huellas grandes tengan aire */
+    max-width: 1100px;
     margin-top: 10px;
-    padding: 0 20px;
 }
 
 .logo-row {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px; /* Más espacio para que no se amontonen con el logo */
+    gap: 60px;
 }
 
-/* Estilo para las imágenes de huellas decorativas */
 .paw-decor {
-    width: 200px;  /* ANTES 70px -> AHORA 150px para que se vean bien */
+    width: 180px;
     height: auto;
     opacity: 0.9;
-    /* TRUCO: Si las huellas son verdes y las querés blancas como el logo, 
-       descomentá la línea de abajo: */
-    /* filter: brightness(0) invert(1); */
 }
 
-/* Inclinación más pronunciada para que parezcan pisadas reales */
-.paw-left {
-    transform: rotate(-25deg);
-}
+.paw-left { transform: rotate(-25deg); }
+.paw-right { transform: rotate(25deg); }
 
-.paw-right {
-    transform: rotate(25deg);
-}
-
-/* Estilo para tu imagen única del logo */
 .main-logo-img {
-    max-height: 220px; /* Un poquito más grande también el logo */
+    max-height: 220px;
     width: auto;
     display: block;
     margin: 0 auto;
 }
 
-/* --- Media Query para Celulares --- */
-@media (max-width: 800px) {
-    .logo-row {
-        gap: 20px;
-    }
-    
-    .paw-decor {
-        width: 60px; /* En celular las bajamos para que no se amontonen */
-    }
-    
-    .main-logo-img {
-        max-height: 140px;
-    }
-}
-
-/* Puedes borrar o comentar las clases viejas (.pet-shop-text, .pipon-logo, .o-with-paw, .slogan-text) 
-   ya que ahora todo está incluido dentro de tu imagen */
-
-/* --- Secciones Principales (Bajo el cartel) --- */
-.container {
-    padding: 30px;
-}
-
-/* --- Galería del Local Tamaño Grande y Horizontal --- */
+/* --- 5. GALERÍA DEL LOCAL --- */
 .local-gallery {
-    display: flex; 
-    flex-direction: row; 
-    gap: 15px; /* Espacio reducido para ganar espacio de foto */
-    padding: 10px 20px; /* Menos padding arriba para que suba todo */
-    max-width: 1400px; /* Aumentamos el ancho máximo de la fila */
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding: 30px 20px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
 .gallery-item {
     position: relative;
-    flex: 1; 
-    height: 450px; /* TAMAÑO GRANDE: Aquí es donde ganan presencia */
+    flex: 1;
+    height: 450px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Sombra más profunda para fotos más grandes */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     cursor: pointer;
 }
 
@@ -148,14 +110,10 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Transición más elegante */
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* El efecto de zoom que te gustó */
-.gallery-item:hover img {
-    transform: scale(1.08);
-}
+.gallery-item:hover img { transform: scale(1.08); }
 
 .gallery-overlay {
     position: absolute;
@@ -165,28 +123,12 @@ body {
     padding: 20px;
     background: linear-gradient(transparent, rgba(0,0,0,0.7));
     color: white;
-    font-size: 1.4rem; /* Texto un poco más grande acorde a la foto */
+    font-size: 1.4rem;
     font-weight: bold;
     z-index: 2;
 }
 
-/* Ajuste para tablets y celulares */
-@media (max-width: 1024px) {
-    .gallery-item {
-        height: 350px; /* Tamaño intermedio en tablets */
-    }
-}
-
-@media (max-width: 768px) {
-    .local-gallery {
-        flex-direction: column; /* En celu una arriba de otra para que no sean fideos */
-    }
-    .gallery-item {
-        height: 300px;
-    }
-}
-
-/* --- Buscador de Productos (Actualizado con rosa del cartel) --- */
+/* --- 6. BUSCADOR --- */
 .search-container {
     display: flex;
     justify-content: center;
@@ -197,7 +139,7 @@ body {
     display: flex;
     width: 100%;
     max-width: 500px;
-    border: 2px solid var(--color-pink-cartel); /* Borde rosa cartel */
+    border: 2px solid var(--color-pink-cartel);
     border-radius: 25px;
     overflow: hidden;
     background-color: var(--color-white);
@@ -213,154 +155,98 @@ body {
 }
 
 .search-box button {
-    background-color: var(--color-pink-cartel); /* Botón rosa cartel */
+    background-color: var(--color-pink-cartel);
     border: none;
     padding: 0 20px;
     cursor: pointer;
 }
 
-.search-box button hover {
-    background-color: #C2185B; /* Rosa más oscuro al pasar mouse */
-}
+.search-icon { font-size: 1.2rem; color: var(--color-white); }
 
-.search-icon {
-    font-size: 1.2rem;
-    color: var(--color-white);
-}
-
-/* --- Media Query para Celulares --- */
-@media (max-width: 600px) {
-    .main-header-cartel {
-        padding: 15px 0;
-    }
-    
-    .pipon-logo {
-        font-size: 3rem; /* Ajustar tamaño logo */
-    }
-    
-    .o-with-paw {
-        font-size: 3rem;
-    }
-
-    .paw-icon {
-        font-size: 1.2rem; /* Huella más pequeña */
-    }
-
-    .slogan-text {
-        font-size: 1rem;
-    }
-}
-
-:root {
-    /* Este es el color exacto de la izquierda de tu foto (el del logo) */
-    --color-pink-cartel: #BE448E; 
-    
-    --color-white: #ffffff;
-    --color-black: #000000;
-    --color-paw-green: #4CAF50;
-    --font-logo: 'Fredoka', sans-serif;
-    --font-body: 'Varela Round', sans-serif;
-}
-
-.main-header-cartel {
-    background-color: var(--color-pink-cartel);
-    padding: 20px 0 30px 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    /* Un borde un poco más oscuro para que haga juego */
-    border-bottom: 3px solid #9B3674; 
-}
-
-/* --- Sección de Productos --- */
+/* --- 7. SECCIÓN DE PRODUCTOS (ESTILO DIBUJO) --- */
 .productos-section {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Títulos con el estilo de tu dibujo */
 .categoria-titulo-principal {
     font-family: var(--font-logo);
     font-size: 2.2rem;
     border: 3px solid var(--color-black);
     display: inline-block;
     padding: 10px 30px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     text-transform: uppercase;
 }
 
-.marca-titulo {
+/* CONTENEDOR DE MARCA: Forzamos el orden vertical */
+.marca-container {
+    display: block; /* Se pone uno abajo del otro */
+    width: 100%;
+    margin-bottom: 50px;
+    clear: both;
+}
+
+.marca-titulo, .marca-titulo-round {
     font-family: var(--font-logo);
     font-size: 1.8rem;
     border: 3px solid var(--color-black);
     display: inline-block;
     padding: 5px 20px;
-    margin: 20px 0;
+    margin-bottom: 25px; /* Espacio antes de los productos */
 }
 
-/* El título redondeado de Pro Plan como en tu dibujo */
-.marca-titulo-round {
-    font-family: var(--font-logo);
-    font-size: 1.8rem;
-    border: 3px solid var(--color-black);
-    border-radius: 50px; /* Hace el óvalo del dibujo */
-    display: inline-block;
-    padding: 10px 40px;
-    margin: 20px 0;
-}
+.marca-titulo-round { border-radius: 50px; padding: 10px 40px; }
 
-/* Grilla de productos */
 .productos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Se acomoda solo según el ancho */
+    display: grid; /* Solo los productos de adentro son grilla */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    margin-bottom: 50px;
+    width: 100%;
 }
 
-/* Tarjeta de producto individual */
 .producto-card {
     border: 3px solid var(--color-black);
-    background-color: var(--color-white);
-    padding: 10px;
+    padding: 15px;
     text-align: center;
-    transition: transform 0.2s;
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.3s ease;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s ease;
+    background: white;
 }
 
 .producto-card:hover {
-    transform: translateY(-5px); /* Pequeño salto al pasar el mouse */
-    box-shadow: 5px 5px 0px var(--color-black); /* Sombra sólida estilo dibujo */
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px var(--color-black);
 }
 
+.producto-foto img {
+    width: 100%;       /* Que ocupe todo el ancho de la cajita */
+    height: 100%;      /* Que ocupe todo el alto de la cajita */
+    object-fit: contain; /* Fundamental: hace que la imagen se vea entera sin estirarse */
+    padding: 10px;     /* Le da un poco de aire para que no toque los bordes */
+}
+
+/* Aseguramos que el contenedor de la foto tenga un tamaño fijo y no explote */
 .producto-foto {
     width: 100%;
-    height: 120px;
-    background-color: #f0f0f0;
-    border: 2px solid #ddd;
+    height: 150px;     /* Podés ajustar este alto a tu gusto */
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #eee;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #888;
+    overflow: hidden;  /* Si algo sobra, se corta */
 }
 
-.producto-info {
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
+.producto-info strong { color: var(--color-pink-cartel); font-size: 1.2rem; }
 
-.producto-info strong {
-    color: var(--color-pink-cartel);
-    font-size: 1.1rem;
-}
-
-/* Celulares */
-@media (max-width: 600px) {
-    .productos-grid {
-        grid-template-columns: repeat(2, 1fr); /* Dos productos por fila en celu */
-    }
+/* --- 8. RESPONSIVE --- */
+@media (max-width: 800px) {
+    .logo-row { gap: 20px; }
+    .paw-decor { width: 60px; }
+    .main-logo-img { max-height: 140px; }
+    .local-gallery { flex-direction: column; }
+    .gallery-item { height: 300px; }
+    .productos-grid { grid-template-columns: repeat(2, 1fr); }
     .categoria-titulo-principal { font-size: 1.5rem; }
 }

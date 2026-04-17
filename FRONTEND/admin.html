@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipon - Panel de Control</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .admin-box {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 3px solid black;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border: 2px solid black;
+            font-family: 'Varela Round';
+            margin-top: 5px;
+        }
+
+        button {
+            background: #BE448E;
+            color: white;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #9B3674;
+        }
+
+        #mensaje-estado {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-box">
+        <h2 class="marca-titulo">AGREGAR PRODUCTO</h2>
+        <form id="admin-form">
+            <div class="form-group">
+                <label>Marca:</label>
+                <select id="adm-marca">
+                    <option value="ROYAL CANIN">ROYAL CANIN</option>
+                    <option value="PRO PLAN">PRO PLAN</option>
+                    <option value="EUKANUBA">EUKANUBA</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nombre del Producto:</label>
+                <input type="text" id="adm-nombre" placeholder="Ej: Adulto Medium" required>
+            </div>
+            <div class="form-group">
+                <label>Precio por Kg:</label>
+                <input type="number" id="adm-precio" placeholder="Ej: 4500" required>
+            </div>
+            <div class="form-group">
+                <label>Palabras clave (Tags):</label>
+                <input type="text" id="adm-tags" placeholder="Ej: perro, cachorro">
+            </div>
+            <button type="submit">GUARDAR EN LA WEB</button>
+        </form>
+
+        <div id="mensaje-estado"></div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN (Cambiá esto por tus datos reales de Supabase)
+        const SUPABASE_URL = 'https://mrikmyjtsntyldadgzdy.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_NVb4WypHphuj7E_1TnYWYw_W90jjm7Q'; // <--- PEGA TU ANON KEY ACÁ
+
+        // Inicializamos el cliente (aquí es donde fallaba antes)
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const form = document.getElementById('admin-form');
+        const mensaje = document.getElementById('mensaje-estado');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita que la página se recargue
+
+            mensaje.textContent = "⏳ Guardando...";
+            mensaje.style.color = "black";
+
+            const nuevoProducto = {
+                marca: document.getElementById('adm-marca').value,
+                nombre: document.getElementById('adm-nombre').value,
+                precio: parseInt(document.getElementById('adm-precio').value),
+                tags: document.getElementById('adm-tags').value,
+                imagen: "img/placeholder.png"
+            };
+
+            try {
+                const { data, error } = await _supabase
+                    .from('productos')
+                    .insert([nuevoProducto]);
+
+                if (error) throw error;
+
+                mensaje.textContent = "✅ ¡Guardado con éxito!";
+                mensaje.style.color = "green";
+                form.reset();
+
+            } catch (error) {
+                console.error(error);
+                mensaje.textContent = "❌ Error: " + error.message;
+                mensaje.style.color = "red";
+            }
+        });
+    </script>
+</body>
+
+</html>
