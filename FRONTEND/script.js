@@ -16,7 +16,7 @@ async function cargarProductos() {
             .order('marca', { ascending: true }); // Los trae ordenados por marca
 
         if (error) throw error;
-        
+
         mostrarProductos(data);
     } catch (error) {
         console.error("Error cargando productos de Supabase:", error.message);
@@ -40,7 +40,7 @@ function mostrarProductos(lista) {
         const titulo = document.createElement('h3');
         titulo.className = (marca === "PRO PLAN") ? "marca-titulo-round" : "marca-titulo";
         titulo.textContent = marca;
-        
+
         // Creamos una NUEVA grilla solo para los productos de esta marca
         const gridDeMarca = document.createElement('div');
         gridDeMarca.classList.add('productos-grid');
@@ -77,7 +77,7 @@ function mostrarProductos(lista) {
 // Lógica del Buscador (Filtrado en tiempo real inteligente)
 buscador.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
-    
+
     // 1. Agarramos todos los contenedores de las marcas
     const contenedoresDeMarca = document.querySelectorAll('.marca-container');
 
@@ -89,7 +89,7 @@ buscador.addEventListener('input', (e) => {
         // 3. Filtramos las tarjetas como antes
         cards.forEach(card => {
             const info = card.getAttribute('data-name').toLowerCase();
-            
+
             if (info.includes(term)) {
                 card.style.display = "block";
                 tieneProductosVisibles = true; // ¡Encontramos al menos uno!
@@ -104,8 +104,12 @@ buscador.addEventListener('input', (e) => {
         } else {
             contenedor.style.display = "none";
         }
+
+
     });
-});
+}
+
+);
 
 // Arrancamos la carga al abrir la página
 cargarProductos();
