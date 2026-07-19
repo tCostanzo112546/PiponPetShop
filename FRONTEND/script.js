@@ -7,6 +7,11 @@ const contenedor = document.getElementById('contenedor-productos');
 const buscador = document.getElementById('product-search');
 const filtrosMarca = document.getElementById('filtros-marca');
 const sinResultados = document.getElementById('sin-resultados');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxNombre = document.getElementById('lightbox-nombre');
+const lightboxPrecio = document.getElementById('lightbox-precio');
+const lightboxCerrar = document.getElementById('lightbox-cerrar');
 
 let marcaActiva = 'TODAS';
 
@@ -94,16 +99,30 @@ function mostrarProductos(lista) {
             card.classList.add('producto-card');
             card.setAttribute('data-name', `${p.marca} ${p.nombre} ${p.tags || ''}`);
 
+            const esUnidad = p.unidad_venta === 'unidad';
+            const precioPrincipal = esUnidad
+                ? `$${Number(p.precio).toLocaleString('es-AR')}`
+                : `$${Number(p.precio).toLocaleString('es-AR')} / kg`;
+
             card.innerHTML = `
     <div class="producto-foto">
         <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.src='img/placeholder.png'">
     </div>
     <div class="producto-info">
         <span class="producto-nombre">${p.nombre}</span>
-        <strong class="precio-kg">$${Number(p.precio).toLocaleString('es-AR')} / kg</strong>
-        ${p.precio_bolsa ? `<span class="precio-bolsa">Bolsa ${p.kilos_bolsa}kg &middot; $${Number(p.precio_bolsa).toLocaleString('es-AR')}</span>` : ''}
+        <strong class="precio-kg">${precioPrincipal}</strong>
+        ${(!esUnidad && p.precio_bolsa) ? `<span class="precio-bolsa">Bolsa ${p.kilos_bolsa}kg &middot; $${Number(p.precio_bolsa).toLocaleString('es-AR')}</span>` : ''}
     </div>
 `;
+            const foto = card.querySelector('.producto-foto');
+            foto.addEventListener('click', () => abrirLightbox(
+                foto.querySelector('img').src,
+                `${p.marca} - ${p.nombre}`,
+                p.precio,
+                p.precio_bolsa,
+                p.kilos_bolsa,
+                p.unidad_venta
+            ));
             gridDeMarca.appendChild(card);
         });
 
@@ -142,6 +161,40 @@ function aplicarFiltros() {
 }
 
 buscador.addEventListener('input', aplicarFiltros);
+
+// --- Lightbox (ver imagen más grande) ---
+function abrirLightbox(src, nombre, precio, precioBolsa, kilosBolsa, unidadVenta) {
+    lightboxImg.src = src;
+    lightboxImg.alt = nombre;
+    lightboxNombre.textContent = nombre;
+
+    let precioTexto;
+    if (unidadVenta === 'unidad') {
+        precioTexto = `$${Number(precio).toLocaleString('es-AR')}`;
+    } else {
+        precioTexto = `$${Number(precio).toLocaleString('es-AR')} / kg`;
+        if (precioBolsa) {
+            precioTexto += ` &middot; Bolsa ${kilosBolsa}kg: $${Number(precioBolsa).toLocaleString('es-AR')}`;
+        }
+    }
+    lightboxPrecio.innerHTML = precioTexto;
+
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarLightbox() {
+    lightbox.hidden = true;
+    document.body.style.overflow = '';
+}
+
+lightboxCerrar.addEventListener('click', cerrarLightbox);
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) cerrarLightbox();
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox.hidden) cerrarLightbox();
+});
 
 // Arrancamos la carga al abrir la página
 cargarProductos();

@@ -167,16 +167,25 @@
 
             <div class="form-group" style="border: 2px dashed #ccc; padding: 15px; margin-bottom: 15px;">
                 <label style="font-weight: bold; color: #BE448E;">Configuración de Precios:</label>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>Este producto se vende:</label>
+                    <select id="adm-unidad-venta">
+                        <option value="kg">Por Kg (alimento a grano)</option>
+                        <option value="unidad">Por Unidad (pouch, lata, etc.)</option>
+                    </select>
+                </div>
+
                 <div class="grid-inputs" style="margin-top: 10px;">
                     <div class="form-group">
-                        <label>Precio por Kg ($):</label>
+                        <label id="label-adm-precio">Precio por Kg ($):</label>
                         <input type="number" id="adm-precio" placeholder="Ej: 4500" required>
                     </div>
                     <div class="form-group">
                         <!-- ESPACIO VACÍO PARA ALINEAR -->
                     </div>
                 </div>
-                <div class="grid-inputs">
+                <div class="grid-inputs" id="fila-precio-bolsa">
                     <div class="form-group">
                         <label>Precio Bolsa Cerrada ($):</label>
                         <input type="number" id="adm-precio-bolsa" placeholder="Ej: 60000">
@@ -218,7 +227,25 @@
 
         const form = document.getElementById('admin-form');
         const selectMarca = document.getElementById('adm-marca');
+        const selectUnidadVenta = document.getElementById('adm-unidad-venta');
+        const labelPrecio = document.getElementById('label-adm-precio');
+        const filaPrecioBolsa = document.getElementById('fila-precio-bolsa');
         const contenedorLista = document.getElementById('contenedor-lista');
+
+        function actualizarUIporUnidad() {
+            if (selectUnidadVenta.value === 'unidad') {
+                labelPrecio.textContent = 'Precio por Unidad ($):';
+                document.getElementById('adm-precio').placeholder = 'Ej: 1300';
+                filaPrecioBolsa.style.display = 'none';
+                document.getElementById('adm-precio-bolsa').value = '';
+                document.getElementById('adm-kilos-bolsa').value = '';
+            } else {
+                labelPrecio.textContent = 'Precio por Kg ($):';
+                document.getElementById('adm-precio').placeholder = 'Ej: 4500';
+                filaPrecioBolsa.style.display = '';
+            }
+        }
+        selectUnidadVenta.addEventListener('change', actualizarUIporUnidad);
 
         async function cargarMarcas() {
             const { data } = await _supabase.from('marcas').select('*').order('nombre');
@@ -258,13 +285,16 @@
             data.forEach(p => {
                 const div = document.createElement('div');
                 div.className = 'item-admin';
+                const infoPrecio = p.unidad_venta === 'unidad'
+                    ? `$${p.precio} por unidad`
+                    : `$${p.precio}/kg | Bolsa ${p.kilos_bolsa || '?'}kg: $${p.precio_bolsa || '-'}`;
                 div.innerHTML = `
                     <div class="item-info">
                         <strong>${p.marca}</strong> - ${p.nombre} <br>
-                        <small>$${p.precio}/kg | Bolsa ${p.kilos_bolsa || '?'}kg: $${p.precio_bolsa || '-'}</small>
+                        <small>${infoPrecio}</small>
                     </div>
                     <div class="item-acciones">
-                        <button class="btn-mini-editar" onclick="prepararEdicion('${p.id}','${p.marca}','${p.nombre}',${p.precio},${p.precio_bolsa || 0},${p.kilos_bolsa || 0},'${p.tags || ''}','${p.imagen}')">Editar</button>
+                        <button class="btn-mini-editar" onclick="prepararEdicion('${p.id}','${p.marca}','${p.nombre}',${p.precio},${p.precio_bolsa || 0},${p.kilos_bolsa || 0},'${p.tags || ''}','${p.imagen}','${p.unidad_venta || 'kg'}')">Editar</button>
                         <button class="btn-mini-borrar" onclick="borrarProducto('${p.id}')">Borrar</button>
                     </div>`;
                 contenedorLista.appendChild(div);
@@ -281,7 +311,8 @@
                 precio_bolsa: parseInt(document.getElementById('adm-precio-bolsa').value) || null,
                 kilos_bolsa: parseInt(document.getElementById('adm-kilos-bolsa').value) || null,
                 tags: document.getElementById('adm-tags').value,
-                imagen: document.getElementById('adm-imagen').value
+                imagen: document.getElementById('adm-imagen').value,
+                unidad_venta: selectUnidadVenta.value
             };
 
             const { error } = id
@@ -295,7 +326,7 @@
             }
         });
 
-        function prepararEdicion(id, marca, nombre, precio, precioBolsa, kilosBolsa, tags, imagen) {
+        function prepararEdicion(id, marca, nombre, precio, precioBolsa, kilosBolsa, tags, imagen, unidadVenta) {
             document.getElementById('adm-id').value = id;
             selectMarca.value = marca;
             document.getElementById('adm-nombre').value = nombre;
@@ -304,6 +335,8 @@
             document.getElementById('adm-kilos-bolsa').value = kilosBolsa || '';
             document.getElementById('adm-tags').value = tags;
             document.getElementById('adm-imagen').value = imagen;
+            selectUnidadVenta.value = unidadVenta || 'kg';
+            actualizarUIporUnidad();
             document.getElementById('titulo-form').textContent = "EDITAR PRODUCTO";
             document.getElementById('btn-cancelar').style.display = "block";
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -312,6 +345,8 @@
         function cancelarEdicion() {
             form.reset();
             document.getElementById('adm-id').value = '';
+            selectUnidadVenta.value = 'kg';
+            actualizarUIporUnidad();
             document.getElementById('titulo-form').textContent = "AGREGAR PRODUCTO";
             document.getElementById('btn-cancelar').style.display = "none";
         }
