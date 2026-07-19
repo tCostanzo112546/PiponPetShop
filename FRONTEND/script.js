@@ -54,14 +54,17 @@ function mostrarProductos(lista) {
             card.setAttribute('data-name', `${p.marca} ${p.nombre} ${p.tags}`);
 
             card.innerHTML = `
-                <div class="producto-foto">
-                    <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='img/placeholder.png'">
-                </div>
-                <p class="producto-info">
-                    ${p.nombre}<br>
-                    <strong>$${p.precio}/kg</strong>
-                </p>
-            `;
+    <div class="producto-foto">
+        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='img/placeholder.png'">
+    </div>
+    <p class="producto-info">
+        <span class="producto-nombre">${p.nombre}</span><br>
+        <strong class="precio-kg">$${p.precio} por kg</strong><br>
+        <span class="precio-bolsa">
+            ${p.precio_bolsa ? '$' + p.precio_bolsa + ' Bolsa cerrada ' + p.kilos_bolsa + 'kg' : ''}
+        </span>
+    </p>
+`;
             gridDeMarca.appendChild(card);
         });
 

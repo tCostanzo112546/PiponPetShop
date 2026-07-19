@@ -4,37 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipon - Admin Pro</title>
+    <title>Pipon - Admin Pro + Kilos</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         body {
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
             padding: 20px;
             font-family: 'Varela Round', sans-serif;
         }
 
         .nav-admin {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto 20px auto;
         }
 
         .btn-volver {
             text-decoration: none;
-            color: #333;
+            color: black;
             font-weight: bold;
-            padding: 10px;
             border: 2px solid black;
+            padding: 8px 15px;
             background: white;
+            display: inline-block;
         }
 
         .admin-box {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             padding: 30px;
             border: 3px solid black;
-            background-color: white;
+            background: white;
             box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
         }
 
@@ -49,9 +50,9 @@
             padding: 10px;
             border: 2px solid black;
             margin-top: 5px;
+            font-family: inherit;
         }
 
-        /* Estilo para la fila de marca + botón */
         .marca-row {
             display: flex;
             gap: 10px;
@@ -65,10 +66,15 @@
             padding: 10px 15px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 5px;
         }
 
-        button {
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button[type="submit"] {
             background: #BE448E;
             color: white;
             padding: 15px;
@@ -76,18 +82,27 @@
             cursor: pointer;
             font-weight: bold;
             margin-top: 10px;
+            width: 100%;
+            font-size: 1rem;
         }
 
-        button:hover {
-            background: #9B3674;
+        #btn-cancelar {
+            background: #666;
+            color: white;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none;
+            width: 100%;
         }
 
         #mensaje-estado {
             margin-top: 20px;
             font-weight: bold;
+            text-align: center;
         }
 
-        /* Lista de productos */
         .lista-admin {
             margin-top: 40px;
             border-top: 3px solid black;
@@ -104,16 +119,20 @@
             background: white;
         }
 
-        .btn-editar {
+        .btn-mini-editar {
             background: #4CAF50;
-            padding: 8px 12px;
-            font-size: 0.8rem;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
         }
 
-        .btn-borrar {
+        .btn-mini-borrar {
             background: #f44336;
-            padding: 8px 12px;
-            font-size: 0.8rem;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -125,52 +144,70 @@
     </div>
 
     <div class="admin-box">
-        <h2 id="titulo-form">AGREGAR PRODUCTO</h2>
+        <h2 id="titulo-form" style="margin-top: 0;">AGREGAR PRODUCTO</h2>
 
         <form id="admin-form">
             <input type="hidden" id="adm-id">
 
-            <div class="form-group">
-                <label>Marca / Categoría:</label>
-                <div class="marca-row">
-                    <select id="adm-marca" style="flex: 1;" required>
-                        <option value="">Cargando marcas...</option>
-                    </select>
-                    <button type="button" class="btn-plus" onclick="nuevaMarca()">+ Nueva</button>
+            <div class="grid-inputs">
+                <div class="form-group">
+                    <label>Marca / Categoría:</label>
+                    <div class="marca-row">
+                        <select id="adm-marca" style="flex: 1;" required>
+                            <option value="">Cargando...</option>
+                        </select>
+                        <button type="button" class="btn-plus" onclick="nuevaMarca()">+</button>
+                    </div>
                 </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
                     <label>Nombre del Producto:</label>
                     <input type="text" id="adm-nombre" placeholder="Ej: Adulto Medium" required>
                 </div>
-                <div class="form-group">
-                    <label>Precio por Kg:</label>
-                    <input type="number" id="adm-precio" placeholder="Ej: 4500" required>
+            </div>
+
+            <div class="form-group" style="border: 2px dashed #ccc; padding: 15px; margin-bottom: 15px;">
+                <label style="font-weight: bold; color: #BE448E;">Configuración de Precios:</label>
+                <div class="grid-inputs" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <label>Precio por Kg ($):</label>
+                        <input type="number" id="adm-precio" placeholder="Ej: 4500" required>
+                    </div>
+                    <div class="form-group">
+                        <!-- ESPACIO VACÍO PARA ALINEAR -->
+                    </div>
+                </div>
+                <div class="grid-inputs">
+                    <div class="form-group">
+                        <label>Precio Bolsa Cerrada ($):</label>
+                        <input type="number" id="adm-precio-bolsa" placeholder="Ej: 60000">
+                    </div>
+                    <div class="form-group">
+                        <label>Kilos de la Bolsa (kg):</label>
+                        <input type="number" id="adm-kilos-bolsa" placeholder="Ej: 15 o 20">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>URL de la Imagen:</label>
-                <input type="url" id="adm-imagen" placeholder="https://..." required>
+            <div class="grid-inputs">
+                <div class="form-group">
+                    <label>URL de la Imagen:</label>
+                    <input type="url" id="adm-imagen" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>Tags (opcional):</label>
+                    <input type="text" id="adm-tags" placeholder="perro, cachorro">
+                </div>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <button type="submit" id="btn-guardar" style="flex: 2;">GUARDAR EN LA WEB</button>
-                <button type="button" id="btn-cancelar" onclick="cancelarEdicion()"
-                    style="flex: 1; display:none; background:#666;">CANCELAR</button>
-            </div>
+            <button type="submit" id="btn-guardar">GUARDAR EN LA WEB</button>
+            <button type="button" id="btn-cancelar" onclick="cancelarEdicion()">CANCELAR EDICIÓN</button>
         </form>
 
         <div id="mensaje-estado"></div>
 
         <div class="lista-admin">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0;">Productos Actuales</h3>
-                <input type="text" id="busqueda-admin" placeholder="🔍 Buscar..." style="width: 200px; margin:0;">
-            </div>
-            <div id="contenedor-lista"></div>
+            <h3 style="margin-bottom: 20px;">Productos en Stock</h3>
+            <div id="contenedor-lista">Cargando...</div>
         </div>
     </div>
 
@@ -183,35 +220,24 @@
         const selectMarca = document.getElementById('adm-marca');
         const contenedorLista = document.getElementById('contenedor-lista');
 
-        // --- 1. CARGAR MARCAS DESDE SUPABASE ---
         async function cargarMarcas() {
-            try {
-                const { data, error } = await _supabase.from('marcas').select('*').order('nombre');
-                if (error) throw error;
-
-                selectMarca.innerHTML = '<option value="">Seleccionar marca...</option>';
-                data.forEach(m => {
-                    const opt = document.createElement('option');
-                    opt.value = m.nombre;
-                    opt.textContent = m.nombre;
-                    selectMarca.appendChild(opt);
-                });
-            } catch (err) {
-                console.error("Error cargando marcas:", err);
-            }
+            const { data } = await _supabase.from('marcas').select('*').order('nombre');
+            selectMarca.innerHTML = '<option value="">Seleccionar marca...</option>';
+            data.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.nombre; opt.textContent = m.nombre;
+                selectMarca.appendChild(opt);
+            });
         }
 
-        // --- 2. AGREGAR NUEVA MARCA ---
         async function nuevaMarca() {
-            const nombre = prompt("Nombre de la nueva marca o categoría (Ej: Juguetes, Royal Canin, Huesos):");
-            if (nombre) {
-                const { error } = await _supabase.from('marcas').insert([{ nombre: nombre.toUpperCase() }]);
-                if (error) alert("Error: " + error.message);
-                else cargarMarcas(); // Recarga el combo
+            const n = prompt("Nueva marca:");
+            if (n) {
+                await _supabase.from('marcas').insert([{ nombre: n.toUpperCase().trim() }]);
+                cargarMarcas();
             }
         }
 
-        // --- 3. CARGAR PRODUCTOS ---
         async function cargarLista() {
             const { data } = await _supabase.from('productos').select('*').order('id', { ascending: false });
             contenedorLista.innerHTML = '';
@@ -219,46 +245,54 @@
                 const div = document.createElement('div');
                 div.className = 'item-admin';
                 div.innerHTML = `
-                    <div class="item-info"><strong>${p.marca}</strong> - ${p.nombre} ($${p.precio})</div>
+                    <div class="item-info">
+                        <strong>${p.marca}</strong> - ${p.nombre} <br>
+                        <small>$${p.precio}/kg | Bolsa ${p.kilos_bolsa || '?'}kg: $${p.precio_bolsa || '-'}</small>
+                    </div>
                     <div class="item-acciones">
-                        <button class="btn-editar" onclick="prepararEdicion('${p.id}','${p.marca}','${p.nombre}',${p.precio},'${p.imagen}')">Editar</button>
-                        <button class="btn-borrar" onclick="borrarProducto('${p.id}')">Borrar</button>
+                        <button class="btn-mini-editar" onclick="prepararEdicion('${p.id}','${p.marca}','${p.nombre}',${p.precio},${p.precio_bolsa || 0},${p.kilos_bolsa || 0},'${p.tags || ''}','${p.imagen}')">Editar</button>
+                        <button class="btn-mini-borrar" onclick="borrarProducto('${p.id}')">Borrar</button>
                     </div>`;
                 contenedorLista.appendChild(div);
             });
         }
 
-        // --- 4. GUARDAR PRODUCTO ---
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('adm-id').value;
-            const datos = {
+            const productoData = {
                 marca: selectMarca.value,
                 nombre: document.getElementById('adm-nombre').value,
                 precio: parseInt(document.getElementById('adm-precio').value),
+                precio_bolsa: parseInt(document.getElementById('adm-precio-bolsa').value) || null,
+                kilos_bolsa: parseInt(document.getElementById('adm-kilos-bolsa').value) || null,
+                tags: document.getElementById('adm-tags').value,
                 imagen: document.getElementById('adm-imagen').value
             };
 
             const { error } = id
-                ? await _supabase.from('productos').update(datos).eq('id', id)
-                : await _supabase.from('productos').insert([datos]);
+                ? await _supabase.from('productos').update(productoData).eq('id', id)
+                : await _supabase.from('productos').insert([productoData]);
 
-            if (error) alert("Error: " + error.message);
-            else {
-                document.getElementById('mensaje-estado').textContent = "✅ ¡Guardado!";
+            if (!error) {
+                document.getElementById('mensaje-estado').textContent = "✅ Guardado";
                 cancelarEdicion();
                 cargarLista();
             }
         });
 
-        function prepararEdicion(id, marca, nombre, precio, imagen) {
+        function prepararEdicion(id, marca, nombre, precio, precioBolsa, kilosBolsa, tags, imagen) {
             document.getElementById('adm-id').value = id;
             selectMarca.value = marca;
             document.getElementById('adm-nombre').value = nombre;
             document.getElementById('adm-precio').value = precio;
+            document.getElementById('adm-precio-bolsa').value = precioBolsa || '';
+            document.getElementById('adm-kilos-bolsa').value = kilosBolsa || '';
+            document.getElementById('adm-tags').value = tags;
             document.getElementById('adm-imagen').value = imagen;
             document.getElementById('titulo-form').textContent = "EDITAR PRODUCTO";
             document.getElementById('btn-cancelar').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function cancelarEdicion() {
@@ -275,7 +309,6 @@
             }
         }
 
-        // Inicio
         cargarMarcas();
         cargarLista();
     </script>

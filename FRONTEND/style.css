@@ -238,6 +238,17 @@ body {
     overflow: hidden;  /* Si algo sobra, se corta */
 }
 
+.precio-kg {
+    color: #BE448E; /* Tu color rosa/fucsia */
+    font-size: 1.1rem;
+}
+
+.precio-bolsa {
+    color: #666; /* Un gris para que sea secundario */
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
 .producto-info strong { color: var(--color-pink-cartel); font-size: 1.2rem; }
 
 /* --- 8. RESPONSIVE --- */
