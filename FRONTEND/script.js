@@ -5,114 +5,143 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const contenedor = document.getElementById('contenedor-productos');
 const buscador = document.getElementById('product-search');
+const filtrosMarca = document.getElementById('filtros-marca');
+const sinResultados = document.getElementById('sin-resultados');
+
+let marcaActiva = 'TODAS';
 
 // Función para cargar productos desde la NUBE
 async function cargarProductos() {
     try {
-        // Pedimos los datos a la tabla 'productos' de Supabase
         const { data, error } = await _supabase
             .from('productos')
             .select('*')
-            .order('marca', { ascending: true }); // Los trae ordenados por marca
+            .order('marca', { ascending: true });
 
         if (error) throw error;
 
         mostrarProductos(data);
+        armarFiltrosMarca(data);
     } catch (error) {
         console.error("Error cargando productos de Supabase:", error.message);
+        contenedor.innerHTML = '<p class="sin-resultados">No pudimos cargar los productos. Probá recargar la página 🐾</p>';
     }
 }
 
+function armarFiltrosMarca(lista) {
+    const marcas = [...new Set(lista.map(p => p.marca))].sort();
+    filtrosMarca.innerHTML = '';
+
+    const chipTodas = crearChip('TODAS', marcaActiva === 'TODAS');
+    filtrosMarca.appendChild(chipTodas);
+
+    marcas.forEach(marca => {
+        filtrosMarca.appendChild(crearChip(marca, marcaActiva === marca));
+    });
+}
+
+function crearChip(nombre, activo) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip-marca' + (activo ? ' chip-activo' : '');
+    chip.textContent = nombre === 'TODAS' ? 'Todas' : nombre;
+    chip.addEventListener('click', () => {
+        marcaActiva = nombre;
+        document.querySelectorAll('.chip-marca').forEach(c => c.classList.remove('chip-activo'));
+        chip.classList.add('chip-activo');
+        aplicarFiltros();
+    });
+    return chip;
+}
 
 function mostrarProductos(lista) {
-    contenedor.innerHTML = ''; // Limpiamos el contenedor principal
+    contenedor.innerHTML = '';
 
-    // 1. Obtenemos las marcas únicas
+    if (!lista.length) {
+        sinResultados.hidden = false;
+        return;
+    }
+    sinResultados.hidden = true;
+
     const marcas = [...new Set(lista.map(p => p.marca))];
 
-    // 2. Creamos una sección por cada marca
     marcas.forEach(marca => {
-        // Creamos el contenedor de la marca (Este ocupará todo el ancho)
         const marcaContainer = document.createElement('div');
         marcaContainer.classList.add('marca-container');
+        marcaContainer.setAttribute('data-marca', marca);
 
-        // Creamos el título de la marca
+        const productosDeEstaMarca = lista.filter(p => p.marca === marca);
+
+        const header = document.createElement('div');
+        header.className = 'marca-header';
+
         const titulo = document.createElement('h3');
-        titulo.className = (marca === "PRO PLAN") ? "marca-titulo-round" : "marca-titulo";
+        titulo.className = 'marca-titulo';
         titulo.textContent = marca;
 
-        // Creamos una NUEVA grilla solo para los productos de esta marca
+        const contador = document.createElement('span');
+        contador.className = 'marca-contador';
+        contador.textContent = `${productosDeEstaMarca.length} producto${productosDeEstaMarca.length !== 1 ? 's' : ''}`;
+
+        header.appendChild(titulo);
+        header.appendChild(contador);
+
         const gridDeMarca = document.createElement('div');
         gridDeMarca.classList.add('productos-grid');
-
-        // 3. Filtramos y agregamos los productos a ESTA grilla
-        const productosDeEstaMarca = lista.filter(p => p.marca === marca);
 
         productosDeEstaMarca.forEach(p => {
             const card = document.createElement('div');
             card.classList.add('producto-card');
-            card.setAttribute('data-name', `${p.marca} ${p.nombre} ${p.tags}`);
+            card.setAttribute('data-name', `${p.marca} ${p.nombre} ${p.tags || ''}`);
 
             card.innerHTML = `
     <div class="producto-foto">
-        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='img/placeholder.png'">
+        <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.src='img/placeholder.png'">
     </div>
-    <p class="producto-info">
-        <span class="producto-nombre">${p.nombre}</span><br>
-        <strong class="precio-kg">$${p.precio} por kg</strong><br>
-        <span class="precio-bolsa">
-            ${p.precio_bolsa ? '$' + p.precio_bolsa + ' Bolsa cerrada ' + p.kilos_bolsa + 'kg' : ''}
-        </span>
-    </p>
+    <div class="producto-info">
+        <span class="producto-nombre">${p.nombre}</span>
+        <strong class="precio-kg">$${Number(p.precio).toLocaleString('es-AR')} / kg</strong>
+        ${p.precio_bolsa ? `<span class="precio-bolsa">Bolsa ${p.kilos_bolsa}kg &middot; $${Number(p.precio_bolsa).toLocaleString('es-AR')}</span>` : ''}
+    </div>
 `;
             gridDeMarca.appendChild(card);
         });
 
-        // 4. Metemos el título y la grilla dentro del contenedor de la marca
-        marcaContainer.appendChild(titulo);
+        marcaContainer.appendChild(header);
         marcaContainer.appendChild(gridDeMarca);
-
-        // 5. Metemos el contenedor de la marca en el contenedor principal de la página
         contenedor.appendChild(marcaContainer);
     });
 }
 
-// Lógica del Buscador (Filtrado en tiempo real inteligente)
-buscador.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-
-    // 1. Agarramos todos los contenedores de las marcas
+// Filtrado combinado: texto de búsqueda + chip de marca seleccionado
+function aplicarFiltros() {
+    const term = buscador.value.toLowerCase().trim();
     const contenedoresDeMarca = document.querySelectorAll('.marca-container');
+    let algunResultadoVisible = false;
 
-    contenedoresDeMarca.forEach(contenedor => {
-        // 2. Buscamos las tarjetas SOLO dentro de esta marca
-        const cards = contenedor.querySelectorAll('.producto-card');
+    contenedoresDeMarca.forEach(cont => {
+        const marca = cont.getAttribute('data-marca');
+        const coincideMarca = marcaActiva === 'TODAS' || marca === marcaActiva;
+
+        const cards = cont.querySelectorAll('.producto-card');
         let tieneProductosVisibles = false;
 
-        // 3. Filtramos las tarjetas como antes
         cards.forEach(card => {
             const info = card.getAttribute('data-name').toLowerCase();
-
-            if (info.includes(term)) {
-                card.style.display = "block";
-                tieneProductosVisibles = true; // ¡Encontramos al menos uno!
-            } else {
-                card.style.display = "none";
-            }
+            const coincideTexto = info.includes(term);
+            const visible = coincideMarca && coincideTexto;
+            card.style.display = visible ? '' : 'none';
+            if (visible) tieneProductosVisibles = true;
         });
 
-        // 4. Si la marca tiene al menos un producto visible, la mostramos. Si no, la escondemos.
-        if (tieneProductosVisibles) {
-            contenedor.style.display = "block";
-        } else {
-            contenedor.style.display = "none";
-        }
-
-
+        cont.style.display = tieneProductosVisibles ? '' : 'none';
+        if (tieneProductosVisibles) algunResultadoVisible = true;
     });
+
+    sinResultados.hidden = algunResultadoVisible;
 }
 
-);
+buscador.addEventListener('input', aplicarFiltros);
 
 // Arrancamos la carga al abrir la página
 cargarProductos();

@@ -232,10 +232,24 @@
 
         async function nuevaMarca() {
             const n = prompt("Nueva marca:");
-            if (n) {
-                await _supabase.from('marcas').insert([{ nombre: n.toUpperCase().trim() }]);
-                cargarMarcas();
+            if (!n || !n.trim()) return;
+
+            const nombre = n.toUpperCase().trim();
+
+            const yaExiste = Array.from(selectMarca.options).some(o => o.value === nombre);
+            if (yaExiste) {
+                alert(`La marca "${nombre}" ya existe.`);
+                selectMarca.value = nombre;
+                return;
             }
+
+            const { error } = await _supabase.from('marcas').insert([{ nombre }]);
+            if (error) {
+                alert("No se pudo guardar la marca: " + error.message);
+                return;
+            }
+            await cargarMarcas();
+            selectMarca.value = nombre;
         }
 
         async function cargarLista() {

@@ -61,8 +61,20 @@
         </section>
 
         <section class="productos-section">
-            <h2 class="categoria-titulo-principal">NUESTROS PRODUCTOS</h2>
-            <div id="contenedor-productos"></div>
+            <div class="productos-header">
+                <h2 class="categoria-titulo-principal">NUESTROS PRODUCTOS</h2>
+                <div class="filtros-marca" id="filtros-marca"></div>
+            </div>
+            <div id="contenedor-productos">
+                <div class="skeleton-grid">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </div>
+            <p id="sin-resultados" class="sin-resultados" hidden>No encontramos productos que coincidan con tu búsqueda
+                🐾</p>
         </section>
 
     </main>

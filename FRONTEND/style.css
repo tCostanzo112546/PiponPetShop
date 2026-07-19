@@ -163,11 +163,15 @@ body {
 
 .search-icon { font-size: 1.2rem; color: var(--color-white); }
 
-/* --- 7. SECCIÓN DE PRODUCTOS (ESTILO DIBUJO) --- */
+/* --- 7. SECCIÓN DE PRODUCTOS --- */
 .productos-section {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.productos-header {
+    margin-bottom: 36px;
 }
 
 .categoria-titulo-principal {
@@ -176,80 +180,160 @@ body {
     border: 3px solid var(--color-black);
     display: inline-block;
     padding: 10px 30px;
-    margin-bottom: 40px;
+    margin-bottom: 22px;
     text-transform: uppercase;
+}
+
+/* --- Chips de filtro por marca --- */
+.filtros-marca {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip-marca {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 2px solid var(--color-pink-cartel);
+    background: var(--color-white);
+    color: var(--color-pink-cartel);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.chip-marca:hover {
+    transform: translateY(-2px);
+}
+
+.chip-marca.chip-activo {
+    background: var(--color-pink-cartel);
+    color: var(--color-white);
 }
 
 /* CONTENEDOR DE MARCA: Forzamos el orden vertical */
 .marca-container {
-    display: block; /* Se pone uno abajo del otro */
+    display: block;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 48px;
     clear: both;
+}
+
+.marca-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
 }
 
 .marca-titulo, .marca-titulo-round {
     font-family: var(--font-logo);
-    font-size: 1.8rem;
-    border: 3px solid var(--color-black);
-    display: inline-block;
-    padding: 5px 20px;
-    margin-bottom: 25px; /* Espacio antes de los productos */
+    font-size: 1.5rem;
+    color: var(--color-black);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.marca-titulo-round { border-radius: 50px; padding: 10px 40px; }
+.marca-contador {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #999;
+    white-space: nowrap;
+}
 
 .productos-grid {
-    display: grid; /* Solo los productos de adentro son grilla */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
     width: 100%;
 }
 
 .producto-card {
-    border: 3px solid var(--color-black);
-    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid #eee;
+    overflow: hidden;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s ease;
-    background: white;
+    background: var(--color-white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .producto-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 6px 6px 0px var(--color-black);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(190, 68, 142, 0.18);
 }
 
-.producto-foto img {
-    width: 100%;       /* Que ocupe todo el ancho de la cajita */
-    height: 100%;      /* Que ocupe todo el alto de la cajita */
-    object-fit: contain; /* Fundamental: hace que la imagen se vea entera sin estirarse */
-    padding: 10px;     /* Le da un poco de aire para que no toque los bordes */
-}
-
-/* Aseguramos que el contenedor de la foto tenga un tamaño fijo y no explote */
 .producto-foto {
     width: 100%;
-    height: 150px;     /* Podés ajustar este alto a tu gusto */
-    background-color: #f5f5f5;
-    border-bottom: 2px solid #eee;
+    height: 160px;
+    background-color: #faf7f8;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;  /* Si algo sobra, se corta */
+    overflow: hidden;
+}
+
+.producto-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 14px;
+}
+
+.producto-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px 18px;
+}
+
+.producto-nombre {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-black);
 }
 
 .precio-kg {
-    color: #BE448E; /* Tu color rosa/fucsia */
-    font-size: 1.1rem;
+    color: var(--color-pink-cartel);
+    font-size: 1.15rem;
+    font-family: var(--font-logo);
 }
 
 .precio-bolsa {
-    color: #666; /* Un gris para que sea secundario */
-    font-size: 0.9rem;
-    font-style: italic;
+    color: #888;
+    font-size: 0.82rem;
 }
 
-.producto-info strong { color: var(--color-pink-cartel); font-size: 1.2rem; }
+.sin-resultados {
+    text-align: center;
+    color: #888;
+    font-size: 1.05rem;
+    padding: 60px 20px;
+}
+
+/* --- Skeleton de carga --- */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+}
+
+.skeleton-card {
+    height: 240px;
+    border-radius: 14px;
+    background: linear-gradient(100deg, #f0f0f0 30%, #f8f8f8 50%, #f0f0f0 70%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.3s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
 
 /* --- 8. RESPONSIVE --- */
 @media (max-width: 800px) {
@@ -258,6 +342,9 @@ body {
     .main-logo-img { max-height: 140px; }
     .local-gallery { flex-direction: column; }
     .gallery-item { height: 300px; }
-    .productos-grid { grid-template-columns: repeat(2, 1fr); }
+    .productos-grid, .skeleton-grid { grid-template-columns: repeat(2, 1fr); }
     .categoria-titulo-principal { font-size: 1.5rem; }
+    .filtros-marca { gap: 8px; }
+    .chip-marca { font-size: 0.8rem; padding: 6px 14px; }
+    .marca-header { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
