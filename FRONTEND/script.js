@@ -111,7 +111,7 @@ function mostrarProductos(lista) {
     <div class="producto-info">
         <span class="producto-nombre">${p.nombre}</span>
         <strong class="precio-kg">${precioPrincipal}</strong>
-        ${(!esUnidad && p.precio_bolsa) ? `<span class="precio-bolsa">Bolsa ${p.kilos_bolsa}kg &middot; $${Number(p.precio_bolsa).toLocaleString('es-AR')}</span>` : ''}
+        ${(!esUnidad && p.precio_bolsa) ? `<span class="precio-bolsa">Bolsa ${Number(p.kilos_bolsa).toString().replace('.', ',')}kg &middot; $${Number(p.precio_bolsa).toLocaleString('es-AR')}</span>` : ''}
     </div>
 `;
             const foto = card.querySelector('.producto-foto');
@@ -174,7 +174,7 @@ function abrirLightbox(src, nombre, precio, precioBolsa, kilosBolsa, unidadVenta
     } else {
         precioTexto = `$${Number(precio).toLocaleString('es-AR')} / kg`;
         if (precioBolsa) {
-            precioTexto += ` &middot; Bolsa ${kilosBolsa}kg: $${Number(precioBolsa).toLocaleString('es-AR')}`;
+            precioTexto += ` &middot; Bolsa ${Number(kilosBolsa).toString().replace('.', ',')}kg: $${Number(precioBolsa).toLocaleString('es-AR')}`;
         }
     }
     lightboxPrecio.innerHTML = precioTexto;

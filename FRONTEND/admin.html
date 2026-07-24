@@ -192,7 +192,7 @@
                     </div>
                     <div class="form-group">
                         <label>Kilos de la Bolsa (kg):</label>
-                        <input type="number" id="adm-kilos-bolsa" placeholder="Ej: 15 o 20">
+                        <input type="text" inputmode="decimal" id="adm-kilos-bolsa" placeholder="Ej: 15 o 7,5">
                     </div>
                 </div>
             </div>
@@ -216,6 +216,8 @@
 
         <div class="lista-admin">
             <h3 style="margin-bottom: 20px;">Productos en Stock</h3>
+            <input type="text" id="buscador-admin" placeholder="Buscar por nombre, marca o tag..."
+                style="width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
             <div id="contenedor-lista">Cargando...</div>
         </div>
     </div>
@@ -279,15 +281,26 @@
             selectMarca.value = nombre;
         }
 
+        let listaProductosCache = [];
+
         async function cargarLista() {
             const { data } = await _supabase.from('productos').select('*').order('id', { ascending: false });
+            listaProductosCache = data || [];
+            renderizarLista(listaProductosCache);
+        }
+
+        function renderizarLista(lista) {
             contenedorLista.innerHTML = '';
-            data.forEach(p => {
+            if (!lista.length) {
+                contenedorLista.innerHTML = '<p style="color:#999;">No se encontraron productos.</p>';
+                return;
+            }
+            lista.forEach(p => {
                 const div = document.createElement('div');
                 div.className = 'item-admin';
                 const infoPrecio = p.unidad_venta === 'unidad'
                     ? `$${p.precio} por unidad`
-                    : `$${p.precio}/kg | Bolsa ${p.kilos_bolsa || '?'}kg: $${p.precio_bolsa || '-'}`;
+                    : `$${p.precio}/kg | Bolsa ${p.kilos_bolsa ? Number(p.kilos_bolsa).toString().replace('.', ',') : '?'}kg: $${p.precio_bolsa || '-'}`;
                 div.innerHTML = `
                     <div class="item-info">
                         <strong>${p.marca}</strong> - ${p.nombre} <br>
@@ -301,6 +314,14 @@
             });
         }
 
+        document.getElementById('buscador-admin').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            const filtrada = listaProductosCache.filter(p =>
+                `${p.marca} ${p.nombre} ${p.tags || ''}`.toLowerCase().includes(term)
+            );
+            renderizarLista(filtrada);
+        });
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('adm-id').value;
@@ -309,7 +330,7 @@
                 nombre: document.getElementById('adm-nombre').value,
                 precio: parseInt(document.getElementById('adm-precio').value),
                 precio_bolsa: parseInt(document.getElementById('adm-precio-bolsa').value) || null,
-                kilos_bolsa: parseInt(document.getElementById('adm-kilos-bolsa').value) || null,
+                kilos_bolsa: parseFloat(document.getElementById('adm-kilos-bolsa').value.replace(',', '.')) || null,
                 tags: document.getElementById('adm-tags').value,
                 imagen: document.getElementById('adm-imagen').value,
                 unidad_venta: selectUnidadVenta.value
