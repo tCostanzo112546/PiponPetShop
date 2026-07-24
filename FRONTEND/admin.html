@@ -97,6 +97,18 @@
             width: 100%;
         }
 
+        #btn-login {
+            background: #BE448E;
+            color: white;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
         #mensaje-estado {
             margin-top: 20px;
             font-weight: bold;
@@ -143,8 +155,27 @@
         <a href="index.html" class="btn-volver">⬅️ Volver a la Tienda</a>
     </div>
 
-    <div class="admin-box">
-        <h2 id="titulo-form" style="margin-top: 0;">AGREGAR PRODUCTO</h2>
+    <div id="login-box" class="admin-box" style="max-width: 400px;" hidden>
+        <h2 style="margin-top: 0;">Iniciar Sesión</h2>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="login-email" placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+            <label>Contraseña:</label>
+            <input type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button type="button" id="btn-login" onclick="iniciarSesion()">ENTRAR</button>
+        <p id="login-error" style="color: #f44336; font-weight: bold; margin-top: 10px;"></p>
+    </div>
+
+    <div class="admin-box" id="admin-box" hidden>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 id="titulo-form" style="margin-top: 0;">AGREGAR PRODUCTO</h2>
+            <button type="button" onclick="cerrarSesion()"
+                style="height: fit-content; background: #eee; border: 2px solid black; padding: 6px 12px; cursor: pointer;">Cerrar
+                sesión</button>
+        </div>
 
         <form id="admin-form">
             <input type="hidden" id="adm-id">
@@ -171,7 +202,7 @@
                 <div class="form-group" style="margin-top: 10px;">
                     <label>Este producto se vende:</label>
                     <select id="adm-unidad-venta">
-                        <option value="kg">Por Kg (alimento a grano)</option>
+                        <option value="kg">Por Kg (alimento a granel)</option>
                         <option value="unidad">Por Unidad (pouch, lata, etc.)</option>
                     </select>
                 </div>
@@ -226,6 +257,45 @@
         const SUPABASE_URL = 'https://mrikmyjtsntyldadgzdy.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_NVb4WypHphuj7E_1TnYWYw_W90jjm7Q';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const loginBox = document.getElementById('login-box');
+        const adminBox = document.getElementById('admin-box');
+
+        async function iniciarSesion() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            const loginError = document.getElementById('login-error');
+            if (error) {
+                loginError.textContent = "Email o contraseña incorrectos.";
+            } else {
+                loginError.textContent = "";
+                mostrarAdmin();
+            }
+        }
+
+        async function cerrarSesion() {
+            await _supabase.auth.signOut();
+            adminBox.hidden = true;
+            loginBox.hidden = false;
+        }
+
+        function mostrarAdmin() {
+            loginBox.hidden = true;
+            adminBox.hidden = false;
+            cargarMarcas();
+            cargarLista();
+        }
+
+        async function verificarSesion() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                mostrarAdmin();
+            } else {
+                loginBox.hidden = false;
+            }
+        }
+        verificarSesion();
 
         const form = document.getElementById('admin-form');
         const selectMarca = document.getElementById('adm-marca');
@@ -344,6 +414,9 @@
                 document.getElementById('mensaje-estado').textContent = "✅ Guardado";
                 cancelarEdicion();
                 cargarLista();
+            } else {
+                alert("No se pudo guardar: " + error.message);
+                console.error(error);
             }
         });
 
@@ -379,8 +452,6 @@
             }
         }
 
-        cargarMarcas();
-        cargarLista();
     </script>
 </body>
 
