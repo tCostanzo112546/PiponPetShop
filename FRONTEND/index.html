@@ -58,6 +58,7 @@
                     <span class="search-icon">🔍</span>
                 </button>
             </div>
+            <p class="cartel-stock">Consultar por STOCK</p>
         </section>
 
         <section class="productos-section">
@@ -82,6 +83,30 @@
                 <img src="" alt="" id="lightbox-img">
                 <p id="lightbox-nombre" class="lightbox-nombre"></p>
                 <p id="lightbox-precio" class="lightbox-precio"></p>
+                <button type="button" id="lightbox-agregar" class="lightbox-agregar">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <!-- Botón flotante del carrito -->
+        <button type="button" id="btn-carrito" class="btn-carrito-flotante" aria-label="Ver carrito">
+            🛒
+            <span id="carrito-contador" class="carrito-contador" hidden>0</span>
+        </button>
+
+        <!-- Panel del carrito -->
+        <div id="panel-carrito" class="panel-carrito" hidden>
+            <div class="panel-carrito-overlay" id="cerrar-panel-overlay"></div>
+            <div class="panel-carrito-contenido">
+                <div class="panel-carrito-header">
+                    <h3>Tu consulta</h3>
+                    <button type="button" id="cerrar-panel-carrito" aria-label="Cerrar">✕</button>
+                </div>
+                <div id="lista-carrito" class="lista-carrito">
+                    <p class="carrito-vacio">Todavía no agregaste productos.</p>
+                </div>
+                <button type="button" id="btn-enviar-whatsapp" class="btn-enviar-whatsapp" hidden>
+                    Enviar consulta por WhatsApp
+                </button>
             </div>
         </div>
 
