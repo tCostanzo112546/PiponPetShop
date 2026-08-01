@@ -8,6 +8,7 @@ const WHATSAPP_NUMERO = '5491145400941';
 
 const contenedor = document.getElementById('contenedor-productos');
 const buscador = document.getElementById('product-search');
+const btnLimpiarBusqueda = document.getElementById('btn-limpiar-busqueda');
 const filtrosMarca = document.getElementById('filtros-marca');
 const sinResultados = document.getElementById('sin-resultados');
 const lightbox = document.getElementById('lightbox');
@@ -157,6 +158,8 @@ function normalizar(texto) {
 }
 
 function aplicarFiltros() {
+    btnLimpiarBusqueda.hidden = buscador.value.length === 0;
+
     const palabras = normalizar(buscador.value).trim().split(/\s+/).filter(Boolean);
     const contenedoresDeMarca = document.querySelectorAll('.marca-container');
     let algunResultadoVisible = false;
@@ -184,6 +187,12 @@ function aplicarFiltros() {
 }
 
 buscador.addEventListener('input', aplicarFiltros);
+
+btnLimpiarBusqueda.addEventListener('click', () => {
+    buscador.value = '';
+    aplicarFiltros();
+    buscador.focus();
+});
 
 // ---------- Lightbox (ver imagen más grande) ----------
 function abrirLightbox(p) {
