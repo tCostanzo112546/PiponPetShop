@@ -709,3 +709,79 @@ body {
     .fila-carrito-info { font-size: 0.82rem; }
     .panel-carrito-contenido { padding: 16px; }
 }
+
+/* --- 11. FOOTER --- */
+.footer-pipon {
+    background: var(--color-pink-cartel);
+    color: var(--color-white);
+    margin-top: 40px;
+    padding: 36px 20px;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.footer-columna h4 {
+    font-family: var(--font-logo);
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+.footer-columna p {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    line-height: 1.5;
+    margin-bottom: 2px;
+}
+
+.footer-direccion {
+    color: var(--color-white);
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.footer-whatsapp {
+    display: inline-block;
+    background: #25D366;
+    color: var(--color-white);
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.footer-whatsapp:hover {
+    background: #1eb857;
+}
+
+/* --- 12. BOTÓN FLOTANTE DE WHATSAPP --- */
+.btn-whatsapp-flotante {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #25D366;
+    color: var(--color-white);
+    border: none;
+    font-size: 1.5rem;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 800px) {
+    .footer-content { grid-template-columns: 1fr; gap: 22px; text-align: center; }
+    .btn-whatsapp-flotante { bottom: 16px; left: 16px; width: 52px; height: 52px; font-size: 1.3rem; }
+}
