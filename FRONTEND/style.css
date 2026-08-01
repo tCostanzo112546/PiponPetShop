@@ -760,6 +760,16 @@ body {
     background: #1eb857;
 }
 
+.footer-telefono {
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.footer-telefono-link {
+    color: var(--color-white);
+    text-decoration: underline;
+}
+
 /* --- 12. BOTÓN FLOTANTE DE WHATSAPP --- */
 .btn-whatsapp-flotante {
     position: fixed;
