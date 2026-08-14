@@ -16,9 +16,9 @@
 <body>
 
 
-    <header class="main-header-cartel">
+    <header class="main-header-cartel" id="inicio">
         <div class="cartel-content">
-            <div class="menu-toggle" id="mobile-menu">
+            <div class="menu-toggle" id="mobile-menu" aria-label="Abrir menú">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -37,6 +37,25 @@
             </div>
         </div>
     </header>
+
+    <!-- Menú lateral -->
+    <div id="menu-lateral" class="menu-lateral" hidden>
+        <div class="menu-lateral-overlay" id="cerrar-menu-overlay"></div>
+        <nav class="menu-lateral-contenido">
+            <div class="menu-lateral-header">
+                <span>Menú</span>
+                <button type="button" id="cerrar-menu-lateral" aria-label="Cerrar menú">✕</button>
+            </div>
+            <a href="#inicio" class="menu-lateral-link">Inicio</a>
+            <a href="#productos" class="menu-lateral-link">Productos</a>
+            <a href="#contacto" class="menu-lateral-link">Contacto</a>
+            <hr class="menu-lateral-separador">
+            <a href="https://www.instagram.com/pipon_petshop/" target="_blank" rel="noopener"
+                class="menu-lateral-link">📷 Instagram</a>
+            <a href="https://wa.me/5491145400941?text=Hola!%20Quer%C3%ADa%20hacer%20una%20consulta" target="_blank"
+                rel="noopener" class="menu-lateral-link menu-lateral-whatsapp">💬 Escribinos por WhatsApp</a>
+        </nav>
+    </div>
 
     <main class="container">
 
@@ -63,7 +82,7 @@
             <p class="cartel-stock">Consultar por STOCK</p>
         </section>
 
-        <section class="productos-section">
+        <section class="productos-section" id="productos">
             <div class="productos-header">
                 <div class="filtros-marca" id="filtros-marca"></div>
             </div>
@@ -114,12 +133,12 @@
 
     </main>
 
-    <footer class="footer-pipon">
+    <footer class="footer-pipon" id="contacto">
         <div class="footer-content">
             <div class="footer-columna">
                 <h4>📍 Dónde estamos</h4>
-                <a href="https://www.google.com/maps/place/Pipon+Mascotas+Pet+Shop/@-34.5031108,-58.4980751,20.25z/data=!4m6!3m5!1s0x95bcb1ac59b8156d:0xff4d9546d6b61cc6!8m2!3d-34.5030441!4d-58.4979838!16s%2Fg%2F11fj5s30sc?entry=ttu&g_ep=EgoyMDI2MDgxMS4wIKXMDSoASAFQAw%3D%3D"
-                    target="_blank" rel="noopener" class="footer-direccion">
+                <a href="https://www.google.com/maps/search/?api=1&query=Carlos+Gardel+1708" target="_blank"
+                    rel="noopener" class="footer-direccion">
                     Carlos Gardel 1708
                 </a>
             </div>
@@ -138,7 +157,7 @@
                     rel="noopener" class="footer-whatsapp">
                     Escribinos por WhatsApp
                 </a>
-                <p class="footer-telefono">📞 <a href="tel:47947749" class="footer-telefono-link">4794-7749</a></p>
+                <p class="footer-telefono">☎️ <a href="tel:47947749" class="footer-telefono-link">4794-7749</a></p>
             </div>
         </div>
     </footer>
