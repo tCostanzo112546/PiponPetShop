@@ -2,9 +2,9 @@
 
 Sitio web para un pet shop familiar, con catálogo de productos en tiempo real y un panel de administración protegido para cargar y editar el stock.
 
-**🔗 Demo:** [pipon-pet-shop.vercel.app](https://pipon-pet-shop.vercel.app) <!-- reemplazar por la URL real -->
+**🔗 Demo:** [pipon-pet-shop.vercel.app](https://pipon-pet-shop.vercel.app)
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
 - **Catálogo público** (`index.html`) con productos agrupados por marca, filtrado por chips de marca y buscador por palabras clave (sin importar orden ni acentos).
 - **Productos por Kg o por Unidad** (alimento a granel vs. pouches/latas), cada uno con su propio formato de precio.
